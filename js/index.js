@@ -20,6 +20,42 @@ let carSpeed = 5;
 let isCarGoingLeft = false;
 let isCarGoingRight = false;
 
+let obstacleHeight = 25;
+// let obstacleMinWidth = 100;
+// let obstacleMaxWidth = 200;
+// let obstacleWidth = Math.floor(Math.random() * (obstacleMaxWidth - obstacleMinWidth + 1) + obstacleMinWidth);
+let obstacleWidth = 200;
+let obstacleX = Math.floor(Math.random() * (roadWidth - obstacleWidth) + roadX);
+let obstacleY = 0;
+// let obstacleSpeed = 5;
+// let obstacleDirectionX = obstacleSpeed;
+let obstacleDirectionY = 5;
+
+const theObstacles = [];
+
+function drawObstacles(obstacleX, obstacleY) {
+  theObstacles.forEach(obstacle => {
+    ctx.beginPath();
+    ctx.fillStyle = "brown";
+    ctx.fillRect(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
+    ctx.closePath();
+  })
+}
+
+let intervalId;
+
+function movingObstacles() {
+  for (let i = 0; i < 50; i += 1) {
+    if (!gameOver) {
+      intervalId = setInterval((drawObstacles) => {
+        }, 3000);
+      obstacleX = Math.floor(Math.random() * (roadWidth - obstacleWidth) + roadX)
+      obstacleY += obstacleDirectionY;
+      drawObstacles();
+    }
+  }
+}
+
 let gameOver = false;
 
 function drawRoad() {
@@ -63,15 +99,16 @@ function drawCar() {
   }
 }
 
+
 let animationFrameId;
 
 
-function animate() {
+function animate() { // updateGameArea()
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawRoad();
   drawDashedLines()
   drawCar()
-  
+  movingObstacles()
   animationFrameId = requestAnimationFrame(animate);
 }
 
